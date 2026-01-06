@@ -8,5 +8,14 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+showSettings:boolean=false;
 
+toggleSettings(){
+  this.showSettings = !this.showSettings;
+console.log("Toggle Settings clicked!");
+}
+
+handleLogout(){
+console.log("handleLogout clicked!");
+}
 }
