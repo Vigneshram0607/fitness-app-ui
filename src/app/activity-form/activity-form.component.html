@@ -5,14 +5,14 @@
     Add New Activity
   </h5>
 
-  <form>
+  <form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label class="form-label text-secondary small fw-bold">Activity Type</label>
-      <select class="form-select bg-light border-0 py-2">
-        <option selected>🏃 Running</option>
-        <option>🚴 Cycling</option>
-        <option>🏊 Swimming</option>
-        <option>🧘 Yoga</option>
+      <select class="form-select bg-light border-0 py-2" formControlName="activityType">
+        <option value="RUNNING">🏃 Running</option>
+        <option value="CYCLING">🚴 Cycling</option>
+        <option value="SWIMMING">🏊 Swimming</option>
+        <option value="YOGA">🧘 Yoga</option>
       </select>
     </div>
 
@@ -20,7 +20,9 @@
       <label class="form-label text-secondary small fw-bold">Calories Burned</label>
       <div class="input-group">
         <span class="input-group-text bg-light border-0"><i class="fas fa-fire text-danger"></i></span>
-        <input type="number" class="form-control bg-light border-0 py-2" placeholder="e.g. 350">
+        <input type="number" class="form-control bg-light border-0 py-2" placeholder="e.g. 350" formControlName="caloriesBurned"
+               [class.is-invalid]="activityForm.get('caloriesBurned')?.invalid && activityForm.get('caloriesBurned')?.touched">
+        <div class="invalid-feedback">Please enter calories burned (min 1).</div>
       </div>
     </div>
 
@@ -28,7 +30,9 @@
       <label class="form-label text-secondary small fw-bold">Duration (min)</label>
       <div class="input-group">
          <span class="input-group-text bg-light border-0"><i class="fas fa-clock text-secondary"></i></span>
-         <input type="number" class="form-control bg-light border-0 py-2" placeholder="e.g. 45">
+         <input type="number" class="form-control bg-light border-0 py-2" placeholder="e.g. 45" formControlName="duration"
+                [class.is-invalid]="activityForm.get('duration')?.invalid && activityForm.get('duration')?.touched">
+        <div class="invalid-feedback">Please enter duration (min 1).</div>
       </div>
     </div>
 
@@ -36,12 +40,12 @@
       <label class="form-label text-secondary small fw-bold">Date</label>
       <div class="input-group">
          <span class="input-group-text bg-light border-0"><i class="fas fa-calendar-alt text-secondary"></i></span>
-         <input type="date" class="form-control bg-light border-0 py-2">
+         <input type="date" class="form-control bg-light border-0 py-2" formControlName="date">
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
-      <i class="fas fa-plus-circle me-1"></i> Add Workout
+    <button type="submit" class="btn w-100 py-2 fw-bold shadow-sm" [class.btn-primary]="!isAdded" [class.btn-success]="isAdded" [disabled]="!activityForm.valid">
+      <i class="fas me-1" [class.fa-plus-circle]="!isAdded" [class.fa-check]="isAdded"></i> {{ isAdded ? 'Added' : 'Add Workout' }}
     </button>
   </form>
 
