@@ -1,21 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
-showSettings:boolean=false;
+export class HeaderComponent implements OnInit {
+  showSettings = false;
+  user: any;
 
-toggleSettings(){
-  this.showSettings = !this.showSettings;
-console.log("Toggle Settings clicked!");
-}
+  constructor(private authService: AuthService) { }
 
-handleLogout(){
-console.log("handleLogout clicked!");
-}
+  ngOnInit(): void {
+    this.user = this.authService.getUser();
+  }
+
+  toggleSettings() {
+    this.showSettings = !this.showSettings;
+  }
+
+  handleLogout() {
+    this.authService.logout();
+  }
 }

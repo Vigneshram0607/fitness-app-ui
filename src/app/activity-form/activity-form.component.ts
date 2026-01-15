@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-activity-form',
@@ -9,6 +10,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './activity-form.component.scss'
 })
 export class ActivityFormComponent {
+  userId: string='';
+  constructor(private authService: AuthService) { }
+  
+    ngOnInit(): void {
+      this.userId = this.authService.getUser();
+    }
+  
 
   isAdded = false;
   activityForm = new FormGroup({
