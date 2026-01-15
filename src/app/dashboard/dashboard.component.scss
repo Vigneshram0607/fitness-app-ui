@@ -1,0 +1,47 @@
+/* Common Styles for all cards */
+.card {
+    border-radius: 16px;       /* Nice rounded corners */
+    border-width: 2px;         /* Thicker border like the design */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02); /* Very subtle shadow */
+    transition: transform 0.2s; /* Fun: Moves up slightly when you hover! */
+}
+
+/* Hover Effect: Lift up slightly */
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* --- THE BLUE CARD THEME --- */
+.card-blue {
+    background-color: #f0f4ff; /* Very faint blue background */
+    border-color: #4facfe;     /* Bright blue border */
+}
+
+/* --- THE ORANGE CARD THEME --- */
+.card-orange {
+    background-color: #fff9f0; /* Very faint orange background */
+    border-color: #ff9a44;     /* Bright orange border */
+}
+
+/* --- THE GREEN CARD THEME --- */
+.card-green {
+    background-color: #f0fff4; /* Very faint green background */
+    border-color: #4ade80;     /* Bright green border */
+}
+
+/* --- THE ICON CIRCLE --- */
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Makes it a perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* We use Bootstrap's 'subtle' backgrounds in HTML, 
+       but we can reinforce them here if needed */
+}
+
+/* Tweak font sizes to match image perfectly */
+.display-6 {
+    font-size: 2.5rem; /* Makes the number BIG */
+}
