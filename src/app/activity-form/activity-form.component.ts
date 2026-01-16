@@ -11,23 +11,25 @@ import { ApiService } from '../services/api.service';
   styleUrl: './activity-form.component.scss'
 })
 export class ActivityFormComponent {
-  userId: string='';
+  userId: string = '';
+  isAdded: boolean = false;
+  activityForm!: FormGroup;
+
   constructor(private authService: AuthService,
     public apiService: ApiService
   ) { }
-  
-    ngOnInit(): void {
-      this.userId = this.authService.getUserId() || '';
-    }
-  
 
-  isAdded = false;
-  activityForm = new FormGroup({
-    activityType: new FormControl('RUNNING', { nonNullable: true, validators: Validators.required }),
-    caloriesBurned: new FormControl(null, [Validators.required, Validators.min(1)]),
-    duration: new FormControl(null, [Validators.required, Validators.min(1)]),
-    date: new FormControl(this.getTodayDate(), { nonNullable: true, validators: Validators.required })
-  });
+  ngOnInit(): void {
+    this.userId = this.authService.getUserId() || '';
+
+    this.isAdded = false;
+    this.activityForm = new FormGroup({
+      activityType: new FormControl('RUNNING', { nonNullable: true, validators: Validators.required }),
+      caloriesBurned: new FormControl(null, [Validators.required, Validators.min(1)]),
+      duration: new FormControl(null, [Validators.required, Validators.min(1)]),
+      date: new FormControl(this.getTodayDate(), { nonNullable: true, validators: Validators.required })
+    });
+  }
 
   onSubmit() {
     console.log(this.activityForm);
@@ -47,15 +49,15 @@ export class ActivityFormComponent {
         (response) => {
           console.log('Activity added successfully:', response);
           setTimeout(() => {
-        this.isAdded = false;
-      }, 2000);
+            this.isAdded = false;
+          }, 2000);
           this.activityForm.reset();
         },
         (error) => {
           console.error('Error adding activity:', error);
         }
       );
-      
+
     }
   }
 
@@ -67,7 +69,20 @@ export class ActivityFormComponent {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  private formatToIsoDateTime(dateStr: string): string {
-    return `${dateStr}T00:00:00`;
-  }
+  private formatToIsoDateTime(dateString: string): string {
+  if (!dateString) return '';
+
+  const now = new Date();
+  
+  // Extract current time components
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+
+  // Combine the form date with the current time
+  // Result example: "2026-01-16T08:45:30"
+  return `${dateString}T${hh}:${mm}:${ss}`;
+}
+
+  
 }
