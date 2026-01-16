@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { Router, RouterModule } from '@angular/router';
+import { DashboardStatsService } from '../services/dashboard-stats.service';
 
 @Component({
   selector: 'app-activity-list',
@@ -12,8 +13,12 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class ActivityListComponent implements OnInit {
   activities: any[] = [];
-
-  constructor(private apiService: ApiService, public router: Router) { }
+  
+  constructor(
+    private apiService: ApiService, 
+    public router: Router,
+    private dashboardStatsService: DashboardStatsService
+  ) { }
 
   ngOnInit(): void {
     this.loadActivities();
@@ -27,15 +32,17 @@ export class ActivityListComponent implements OnInit {
       if (data) {
         this.activities = data;
         this.activities.sort((a, b) => {
-          // Convert strings to Date objects
           const dateA = new Date(a.createdAt).getTime();
           const dateB = new Date(b.createdAt).getTime();
-
-          // Descending order (newest first)
           return dateB - dateA;
         });
+        this.calculateStats(this.activities);
       }
     });
+  }
+
+  calculateStats(activities: any[]): void {
+    this.dashboardStatsService.updateStats(activities);
   }
 
   getIconClass(activityType: string): string {
@@ -68,4 +75,3 @@ export class ActivityListComponent implements OnInit {
     }
   }
 }
-
