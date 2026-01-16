@@ -1,11 +1,5 @@
 <div class="main-container">
-  <div *ngIf="!authService.isAuthenticated()">
-    <div class="container">
-      <h1>Welcome to the Fitness App</h1>
-      <p>Please login to continue</p>
-      <button (click)="authService.login()">Login</button>
-    </div>
-  </div>
+  <app-login *ngIf="!authService.isAuthenticated()"></app-login>
 
   <div *ngIf="authService.isAuthenticated()">
     <app-header></app-header>
