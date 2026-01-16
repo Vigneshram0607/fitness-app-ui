@@ -52,4 +52,19 @@ export class ActivityListComponent implements OnInit {
     }
   }
 
+  getColorClass(activityType: string): string {
+    switch (activityType) {
+      case 'RUNNING':
+        return 'bg-primary-subtle text-primary';
+      case 'CYCLING':
+        return 'bg-info-subtle text-info';
+      case 'SWIMMING':
+        return 'bg-warning-subtle text-warning';
+      case 'YOGA':
+        return 'bg-success-subtle text-success';
+      default:
+        return 'bg-secondary-subtle text-secondary';
+    }
+  }
+
 }
