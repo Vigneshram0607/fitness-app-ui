@@ -32,3 +32,8 @@
 .activity-scroll-container::-webkit-scrollbar-track {
     background: transparent; 
 }
+
+.card-container:hover{
+    cursor: pointer;
+    // transform: translateY(-5px);
+}

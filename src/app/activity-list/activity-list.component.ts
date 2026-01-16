@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-activity-list',
@@ -12,7 +13,7 @@ import { ApiService } from '../services/api.service';
 export class ActivityListComponent implements OnInit {
   activities: any[] = [];
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, public router: Router) { }
 
   ngOnInit(): void {
     this.loadActivities();
@@ -65,6 +66,10 @@ export class ActivityListComponent implements OnInit {
       default:
         return 'bg-secondary-subtle text-secondary';
     }
+  }
+  onCardClick(activityId: string){
+    console.log('Card Clicked: ',activityId)
+    this.router.navigate(['/activity', activityId]);
   }
 
 }
