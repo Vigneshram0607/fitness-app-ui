@@ -3,11 +3,11 @@
   <!-- <button class="btn btn-sm btn-outline-secondary">View All</button> -->
 </div>
 
-<div class="d-flex flex-column gap-3 activity-scroll-container pe-2">
+<div class="d-flex flex-column gap-3 activity-scroll-container pe-2" style="overflow-x:hidden;">
 
   @for (activity of activities; track activity.id) {
-    <div class="card border-0 shadow-sm p-3 card-container" (click)="onCardClick(activity.id)">
-      <div class="d-flex justify-content-between align-items-center">
+    <a [routerLink]="['/activity', activity.id]" class="card border-0 shadow-sm p-3 card-container text-decoration-none">
+      <div class="d-flex flex-wrap justify-content-between align-items-center activity-card-header">
     
         <div class="d-flex align-items-center">
           <div [class]="getColorClass(activity.type)"
@@ -15,7 +15,7 @@
             <i [class]="getIconClass(activity.type)"></i>
           </div>
           <div>
-            <h6 class="fw-bold mb-0">{{activity.type}}</h6>
+            <h6 class="fw-bold mb-0 text-dark">{{activity.type}}</h6>
             <small class="text-muted"><i class="far fa-calendar me-1"></i>{{activity.startTime | date: 'short'}}</small>
           </div>
         </div>
@@ -31,213 +31,9 @@
           </div>
         </div>
     
-        <!-- <button class="btn btn-light text-danger border-0">
-            <i class="fas fa-trash-alt"></i>
-          </button> -->
-    
       </div>
-    </div>
+    </a>
   }
 
   
-
-
-<!--   
-  <div class="card border-0 shadow-sm p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center">
-        <div class="bg-primary-subtle text-primary rounded p-3 me-3 d-flex align-items-center justify-content-center" 
-             style="width: 50px; height: 50px;">
-          <i class="fas fa-bicycle fa-lg"></i>
-        </div>
-        <div>
-          <h6 class="fw-bold mb-0">Cycling</h6>
-          <small class="text-muted"><i class="far fa-calendar me-1"></i> Jan 6, 2026</small>
-        </div>
-      </div>
-      <div class="d-flex gap-4 text-end">
-        <div>
-           <small class="text-secondary fw-bold d-block">DURATION</small>
-           <span class="fw-bold text-dark">40 min</span>
-        </div>
-        <div>
-           <small class="text-secondary fw-bold d-block">BURNED</small>
-           <span class="fw-bold text-danger">350 kcal</span>
-        </div>
-      </div>
-      <button class="btn btn-light text-danger border-0"><i class="fas fa-trash-alt"></i></button>
-    </div>
-  </div>
-
-  <div class="card border-0 shadow-sm p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      
-      <div class="d-flex align-items-center">
-        <div class="bg-success-subtle text-success rounded p-3 me-3 d-flex align-items-center justify-content-center" 
-             style="width: 50px; height: 50px;">
-          <i class="fas fa-child fa-lg"></i>
-        </div>
-        <div>
-          <h6 class="fw-bold mb-0">Yoga</h6>
-          <small class="text-muted"><i class="far fa-calendar me-1"></i> Oct 23, 2025</small>
-        </div>
-      </div>
-
-      <div class="d-flex gap-4 text-end">
-        <div>
-           <small class="text-secondary fw-bold d-block">DURATION</small>
-           <span class="fw-bold text-dark">55 min</span>
-        </div>
-        <div>
-           <small class="text-secondary fw-bold d-block">BURNED</small>
-           <span class="fw-bold text-danger">200 kcal</span>
-        </div>
-      </div>
-
-      <button class="btn btn-light text-danger border-0">
-        <i class="fas fa-trash-alt"></i>
-      </button>
-
-    </div>
-  </div>
-  <div class="card border-0 shadow-sm p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center">
-        <div class="bg-primary-subtle text-primary rounded p-3 me-3 d-flex align-items-center justify-content-center" 
-             style="width: 50px; height: 50px;">
-          <i class="fas fa-bicycle fa-lg"></i>
-        </div>
-        <div>
-          <h6 class="fw-bold mb-0">Cycling</h6>
-          <small class="text-muted"><i class="far fa-calendar me-1"></i> Jan 6, 2026</small>
-        </div>
-      </div>
-      <div class="d-flex gap-4 text-end">
-        <div>
-           <small class="text-secondary fw-bold d-block">DURATION</small>
-           <span class="fw-bold text-dark">40 min</span>
-        </div>
-        <div>
-           <small class="text-secondary fw-bold d-block">BURNED</small>
-           <span class="fw-bold text-danger">350 kcal</span>
-        </div>
-      </div>
-      <button class="btn btn-light text-danger border-0"><i class="fas fa-trash-alt"></i></button>
-    </div>
-  </div>
-
-  <div class="card border-0 shadow-sm p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      
-      <div class="d-flex align-items-center">
-        <div class="bg-success-subtle text-success rounded p-3 me-3 d-flex align-items-center justify-content-center" 
-             style="width: 50px; height: 50px;">
-          <i class="fas fa-child fa-lg"></i>
-        </div>
-        <div>
-          <h6 class="fw-bold mb-0">Yoga</h6>
-          <small class="text-muted"><i class="far fa-calendar me-1"></i> Oct 23, 2025</small>
-        </div>
-      </div>
-
-      <div class="d-flex gap-4 text-end">
-        <div>
-           <small class="text-secondary fw-bold d-block">DURATION</small>
-           <span class="fw-bold text-dark">55 min</span>
-        </div>
-        <div>
-           <small class="text-secondary fw-bold d-block">BURNED</small>
-           <span class="fw-bold text-danger">200 kcal</span>
-        </div>
-      </div>
-
-      <button class="btn btn-light text-danger border-0">
-        <i class="fas fa-trash-alt"></i>
-      </button>
-
-    </div>
-  </div>
-  <div class="card border-0 shadow-sm p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center">
-        <div class="bg-primary-subtle text-primary rounded p-3 me-3 d-flex align-items-center justify-content-center" 
-             style="width: 50px; height: 50px;">
-          <i class="fas fa-bicycle fa-lg"></i>
-        </div>
-        <div>
-          <h6 class="fw-bold mb-0">Cycling</h6>
-          <small class="text-muted"><i class="far fa-calendar me-1"></i> Jan 6, 2026</small>
-        </div>
-      </div>
-      <div class="d-flex gap-4 text-end">
-        <div>
-           <small class="text-secondary fw-bold d-block">DURATION</small>
-           <span class="fw-bold text-dark">40 min</span>
-        </div>
-        <div>
-           <small class="text-secondary fw-bold d-block">BURNED</small>
-           <span class="fw-bold text-danger">350 kcal</span>
-        </div>
-      </div>
-      <button class="btn btn-light text-danger border-0"><i class="fas fa-trash-alt"></i></button>
-    </div>
-  </div>
-
-  <div class="card border-0 shadow-sm p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      
-      <div class="d-flex align-items-center">
-        <div class="bg-success-subtle text-success rounded p-3 me-3 d-flex align-items-center justify-content-center" 
-             style="width: 50px; height: 50px;">
-          <i class="fas fa-child fa-lg"></i>
-        </div>
-        <div>
-          <h6 class="fw-bold mb-0">Yoga</h6>
-          <small class="text-muted"><i class="far fa-calendar me-1"></i> Oct 23, 2025</small>
-        </div>
-      </div>
-
-      <div class="d-flex gap-4 text-end">
-        <div>
-           <small class="text-secondary fw-bold d-block">DURATION</small>
-           <span class="fw-bold text-dark">55 min</span>
-        </div>
-        <div>
-           <small class="text-secondary fw-bold d-block">BURNED</small>
-           <span class="fw-bold text-danger">200 kcal</span>
-        </div>
-      </div>
-
-      <button class="btn btn-light text-danger border-0">
-        <i class="fas fa-trash-alt"></i>
-      </button>
-
-    </div>
-  </div>
-  <div class="card border-0 shadow-sm p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center">
-        <div class="bg-primary-subtle text-primary rounded p-3 me-3 d-flex align-items-center justify-content-center" 
-             style="width: 50px; height: 50px;">
-          <i class="fas fa-bicycle fa-lg"></i>
-        </div>
-        <div>
-          <h6 class="fw-bold mb-0">Cycling</h6>
-          <small class="text-muted"><i class="far fa-calendar me-1"></i> Jan 6, 2026</small>
-        </div>
-      </div>
-      <div class="d-flex gap-4 text-end">
-        <div>
-           <small class="text-secondary fw-bold d-block">DURATION</small>
-           <span class="fw-bold text-dark">40 min</span>
-        </div>
-        <div>
-           <small class="text-secondary fw-bold d-block">BURNED</small>
-           <span class="fw-bold text-danger">350 kcal</span>
-        </div>
-      </div>
-      <button class="btn btn-light text-danger border-0"><i class="fas fa-trash-alt"></i></button>
-    </div>
-  </div> -->
-
 </div>

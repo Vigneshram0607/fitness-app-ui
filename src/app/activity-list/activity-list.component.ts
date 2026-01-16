@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-activity-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './activity-list.component.html',
   styleUrl: './activity-list.component.scss'
 })
@@ -67,9 +67,5 @@ export class ActivityListComponent implements OnInit {
         return 'bg-secondary-subtle text-secondary';
     }
   }
-  onCardClick(activityId: string){
-    console.log('Card Clicked: ',activityId)
-    this.router.navigate(['/activity', activityId]);
-  }
-
 }
+

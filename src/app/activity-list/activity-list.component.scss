@@ -33,7 +33,26 @@
     background: transparent; 
 }
 
+
+.card-container {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
 .card-container:hover{
     cursor: pointer;
-    // transform: translateY(-5px);
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+@media (max-width: 768px) {
+    .activity-card-header {
+        justify-content: center;
+        text-align: center;
+    }
+    .activity-card-header .d-flex.gap-4 {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: space-around;
+    }
 }
