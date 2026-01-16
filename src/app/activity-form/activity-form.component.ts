@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-activity-form',
@@ -11,10 +12,12 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ActivityFormComponent {
   userId: string='';
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    public apiService: ApiService
+  ) { }
   
     ngOnInit(): void {
-      this.userId = this.authService.getUser();
+      this.userId = this.authService.getUserId() || '';
     }
   
 
@@ -31,7 +34,7 @@ export class ActivityFormComponent {
     if (this.activityForm.valid) {
       const formValues = this.activityForm.getRawValue();
       const postData = {
-        userId: '742e2f3e-b243-4329-8c6b-e6a23a96baa2',
+        userId: this.userId,
         type: formValues.activityType,
         duration: formValues.duration,
         caloriesBurned: formValues.caloriesBurned,
@@ -40,9 +43,19 @@ export class ActivityFormComponent {
       };
       console.log(postData);
       this.isAdded = true;
-      setTimeout(() => {
+      this.apiService.addActivity(postData).subscribe(
+        (response) => {
+          console.log('Activity added successfully:', response);
+          setTimeout(() => {
         this.isAdded = false;
       }, 2000);
+          this.activityForm.reset();
+        },
+        (error) => {
+          console.error('Error adding activity:', error);
+        }
+      );
+      
     }
   }
 

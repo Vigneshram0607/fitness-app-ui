@@ -7,12 +7,16 @@ import { authConfig } from './auth.config';
 })
 export class AuthService {
   private token: string | null = null;
-  private user: any = null;
+  private userId: string | null = null;
+  private payLoad: any;
+  // private user: any;
+
 
   constructor(private router: Router) {
     this.token = localStorage.getItem('token');
     if (this.token) {
-      this.user = this.parseJwt(this.token);
+      this.payLoad = this.parseJwt(this.token);
+      this.userId = this.payLoad ? this.payLoad.sub : null;
     }
   }
 
@@ -77,18 +81,29 @@ export class AuthService {
 
 
   setCredentials(token: string) {
+    // userId from sub
+    // username from name
     this.token = token;
-    this.user = this.parseJwt(token);
+    this.payLoad = this.parseJwt(token);
+    this.userId = this.payLoad ? this.payLoad.sub : null;
     localStorage.setItem('token', token);
+    if (this.userId) {
+      localStorage.setItem('userId', this.userId);
+    }
   }
 
   getToken(): string | null {
     return this.token;
   }
 
-  getUser(): any {
-    return this.user;
+  getUser(): string | null {
+    return this.payLoad;
   }
+
+  getUserId(): string | null {
+    return this.userId;
+  }
+
 
   isAuthenticated(): boolean {
     return !!this.token;
@@ -96,14 +111,15 @@ export class AuthService {
 
   logout() {
     this.token = null;
-    this.user = null;
+    this.userId = null;
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
   }
 
   private parseJwt(token: string) {
     try {
       console.log('TOKEN: ',token);
-      console.log('TOKEN Parse: ',JSON.parse(atob(token.split('.')[1])));
+      console.log('TOKEN Parse: ',JSON.parse(atob(token.split('.')[1]))['sub']);
       return JSON.parse(atob(token.split('.')[1]));
     } catch (e) {
       return null;

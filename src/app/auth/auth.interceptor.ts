@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.authService.getToken();
-    const user = this.authService.getUser();
+    const userId = this.authService.getUserId();
 
     if (token) {
       request = request.clone({
@@ -25,10 +25,10 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    if (user && user.sub) {
+    if (userId) {
       request = request.clone({
         setHeaders: {
-          'X-User-ID': user.sub
+          'X-User-ID': userId
         }
       });
     }
