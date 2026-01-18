@@ -7,12 +7,18 @@ import { authConfig } from './auth.config';
 })
 export class AuthService {
   private token: string | null = null;
-  private user: any = null;
+  private userId: string | null = null;
+  private refreshToken: string | null = null;
+  private payLoad: any;
+  // private user: any;
+
 
   constructor(private router: Router) {
     this.token = localStorage.getItem('token');
+    this.refreshToken = localStorage.getItem('refreshToken');
     if (this.token) {
-      this.user = this.parseJwt(this.token);
+      this.payLoad = this.parseJwt(this.token);
+      this.userId = this.payLoad ? this.payLoad.sub : null;
     }
   }
 
@@ -67,7 +73,7 @@ export class AuthService {
 
     if (response.ok) {
       const data = await response.json();
-      this.setCredentials(data.access_token);
+      this.setCredentials(data.access_token, data.refresh_token);
     } else {
       const error = await response.json();
       console.error('Failed to exchange code for token:', error);
@@ -76,19 +82,73 @@ export class AuthService {
   }
 
 
-  setCredentials(token: string) {
+  setCredentials(token: string, refreshToken?: string) {
+    // userId from sub
+    // username from name
     this.token = token;
-    this.user = this.parseJwt(token);
+    this.payLoad = this.parseJwt(token);
+    this.userId = this.payLoad ? this.payLoad.sub : null;
     localStorage.setItem('token', token);
+    if (refreshToken) {
+      this.refreshToken = refreshToken;
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+    if (this.userId) {
+      localStorage.setItem('userId', this.userId);
+    }
+  }
+
+  async refreshAccessToken(): Promise<string | null> {
+    const { clientId, tokenEndpoint } = authConfig;
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!refreshToken) {
+      this.logout();
+      return null;
+    }
+
+    try {
+      const response = await fetch(tokenEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          client_id: clientId,
+          refresh_token: refreshToken
+        })
+      });
+
+      if (response.ok) {
+        console.log('Refresh token response: ',response.json)
+        const data = await response.json();
+        this.setCredentials(data.access_token, data.refresh_token);
+        return data.access_token;
+      } else {
+        console.error('Failed to refresh token');
+        this.logout();
+        return null;
+      }
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      this.logout();
+      return null;
+    }
   }
 
   getToken(): string | null {
     return this.token;
   }
 
-  getUser(): any {
-    return this.user;
+  getUser(): string | null {
+    return this.payLoad;
   }
+
+  getUserId(): string | null {
+    return this.userId;
+  }
+
 
   isAuthenticated(): boolean {
     return !!this.token;
@@ -96,14 +156,17 @@ export class AuthService {
 
   logout() {
     this.token = null;
-    this.user = null;
+    this.userId = null;
+    this.refreshToken = null;
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('refreshToken');
   }
 
   private parseJwt(token: string) {
     try {
       console.log('TOKEN: ',token);
-      console.log('TOKEN Parse: ',JSON.parse(atob(token.split('.')[1])));
+      console.log('TOKEN Parse: ',JSON.parse(atob(token.split('.')[1]))['sub']);
       return JSON.parse(atob(token.split('.')[1]));
     } catch (e) {
       return null;
@@ -148,5 +211,3 @@ export class AuthService {
       .replace(/=+$/, "");
   }
 }
-
-

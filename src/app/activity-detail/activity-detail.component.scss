@@ -1,0 +1,75 @@
+/* Import styles from dashboard for consistency (Conceptual - in a real app, this would be in a shared file) */
+/* For now, we'll copy the necessary styles */
+
+/* Common Styles for all cards */
+.card {
+    border-radius: 16px;
+    border-width: 2px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    border-style: solid;
+}
+
+/* --- THE BLUE CARD THEME --- */
+.card-blue {
+    background-color: #f0f4ff;
+    border-color: #4facfe;
+}
+
+/* --- THE ORANGE CARD THEME --- */
+.card-orange {
+    background-color: #fff9f0;
+    border-color: #ff9a44;
+}
+
+/* --- THE GREEN CARD THEME --- */
+.card-green {
+    background-color: #f0fff4;
+    border-color: #4ade80;
+}
+
+/* --- THE ICON CIRCLE --- */
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tab Styles */
+.nav-pills .nav-link {
+    color: #333;
+    font-weight: 500;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #ff9a44; /* Using the orange theme color for active tabs */
+}
+
+.tab-content {
+    border-radius: 12px !important;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.accordion-item:first-of-type .accordion-button {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+.accordion-item:last-of-type .accordion-button.collapsed {
+    border-bottom-left-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}

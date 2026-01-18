@@ -1,0 +1,103 @@
+<div class="container-fluid p-4" *ngIf="activity$ | async as activity">
+
+  <!-- Back Button -->
+  <div class="mb-4">
+    <a routerLink="/activity" class="btn btn-light border"><i class="fas fa-arrow-left me-2"></i>Back to Dashboard</a>
+  </div>
+
+  <!-- Header Card -->
+  <div class="card card-blue p-3 mb-4">
+    <div class="d-flex align-items-center">
+      <div class="icon-circle bg-primary-subtle text-primary me-3">
+        <i class="fas {{ getIconForActivity(activity.activityType) }} fa-lg"></i>
+      </div>
+      <div>
+        <h1 class="h3 fw-bold text-dark mb-0">{{ activity.activityType | titlecase }}</h1>
+        <p class="text-muted small mb-0">Completed on {{ activity.creatdAt | date: 'fullDate' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommendation Sections -->
+  <div class="card card-green p-3 mb-4" *ngIf="parsedRecommendation$ | async as recommendation">
+    <h2 class="h5 fw-bold mb-3"><i class="fas fa-analytics me-2"></i>Analysis & Recommendation</h2>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="p-3 bg-light rounded h-100">
+          <h6 class="text-muted fw-bold"><i class="fas fa-bullseye-pointer me-2"></i>Overall</h6>
+          <p class="mb-0">{{ recommendation.overall }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 bg-light rounded h-100">
+          <h6 class="text-muted fw-bold"><i class="fas fa-tachometer-alt me-2"></i>Pace</h6>
+          <p class="mb-0">{{ recommendation.pace }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 bg-light rounded h-100">
+          <h6 class="text-muted fw-bold"><i class="fas fa-heart-pulse me-2"></i>Heart Rate</h6>
+          <p class="mb-0">{{ recommendation.heartRate }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 bg-light rounded h-100">
+          <h6 class="text-muted fw-bold"><i class="fas fa-fire-alt me-2"></i>Calories Burned</h6>
+          <p class="mb-0">{{ recommendation.caloriesBurned }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Tabbed Interface -->
+  <div class="card card-orange p-3">
+    <ul class="nav nav-pills" id="detailsTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="improvements-tab" data-bs-toggle="tab" data-bs-target="#improvements" type="button" role="tab" aria-controls="improvements" aria-selected="true">Improvements</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="safety-tab" data-bs-toggle="tab" data-bs-target="#safety" type="button" role="tab" aria-controls="safety" aria-selected="false">Safety</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="suggestions-tab" data-bs-toggle="tab" data-bs-target="#suggestions" type="button" role="tab" aria-controls="suggestions" aria-selected="false">Suggestions</button>
+      </li>
+    </ul>
+    <div class="tab-content bg-white p-3 mt-3 rounded">
+      <div class="tab-pane fade show active" id="improvements" role="tabpanel" aria-labelledby="improvements-tab">
+        <ul class="list-unstyled">
+          <li *ngFor="let item of activity.improvements" class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>{{ item }}</li>
+        </ul>
+      </div>
+      <div class="tab-pane fade" id="safety" role="tabpanel" aria-labelledby="safety-tab">
+        <ul class="list-unstyled">
+          <li *ngFor="let item of activity.safety" class="mb-2"><i class="fas fa-exclamation-triangle text-danger me-2"></i>{{ item }}</li>
+        </ul>
+      </div>
+      <div class="tab-pane fade" id="suggestions" role="tabpanel" aria-labelledby="suggestions-tab">
+        <div class="accordion" id="suggestionsAccordion">
+          <div class="accordion-item" *ngFor="let suggestion of (suggestions$ | async); let i = index">
+            <h2 class="accordion-header" [id]="'heading' + i">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i">
+                {{ suggestion.title }}
+              </button>
+            </h2>
+            <div [id]="'collapse' + i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + i" data-bs-parent="#suggestionsAccordion">
+              <div class="accordion-body">
+                {{ suggestion.description }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="!(activity$ | async)" class="text-center p-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <p class="mt-2">Loading activity details...</p>
+</div>
